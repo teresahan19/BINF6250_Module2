@@ -1,0 +1,99 @@
+#Markov Chain Project
+
+
+def build_markov_model(markov_model, text, order=1):
+    def count_words(text):
+        return len(text.split())
+
+    def count_sentences(text):
+        sentences = re.split(r'[.!?,]+', text)
+        return len(sentences) - 1
+
+    def avg_words_per_sentence(text):
+        return round(count_words(text) / count_sentences(text))
+
+    if '_metadata' not in markov_model:
+        markov_model['_metadata'] = {}
+
+    num_sentences = count_sentences(text)
+    num_words = count_words(text)
+    avg_length = avg_words_per_sentence(text)
+    markov_model['_metadata']['avg_length'] = avg_length
+
+    text = ["*S*"] * order + text.lower().split() + ["*E*"]
+    for i in range(len(text) - order):
+        current_word = tuple(text[i:i + order])
+        next_word = text[i + order]
+
+        if current_word not in markov_model:
+            markov_model[current_word] = {}
+
+        if next_word not in markov_model[current_word]:
+            markov_model[current_word][next_word] = 1
+        else:
+            markov_model[current_word][next_word] += 1
+
+    return markov_model
+
+
+
+
+
+
+import re
+import random
+
+def get_next_word(current_word, markov_model, seed=42):
+    if current_word not in markov_model:
+        return '*E*'
+
+    next_word_dict = markov_model[current_word]
+
+    next_words = list(next_word_dict.keys())
+    counts = list(next_word_dict.values())
+
+    next_word = random.choices(next_words, weights=counts)[0]
+
+    return next_word
+
+def generate_random_text(markov_model, seed=42):
+    random.seed(seed)
+    #target length for sentence
+    target_length = markov_model.get('_metadata', {}).get('avg_length', 10)
+
+    #figure out the order of the markov model
+    first_key = next(k for k in markov_model if k != '_metadata')
+    if isinstance(first_key, tuple):
+        order = len(first_key)
+    else:
+        order = 1
+
+    #initialize the start state
+    if order == 1:
+        current_word = '*S*'
+    else:
+        current_word = tuple(['*S*'] * order)
+
+    #create a list for generated text
+    sentence = []
+    while len(sentence) < target_length:
+        next_word = get_next_word(current_word, markov_model, seed)
+        if order == 1:
+            current_word = next_word
+        else:
+            current_word = current_word[1:] + (next_word,)
+
+        if next_word == '*E*':
+            break
+        sentence.append(next_word)
+
+    return ' '.join(sentence)
+
+
+markov_model = dict()
+with open("data/one_fish_two_fish.txt", "r") as f:
+    text = f.read()
+    markov_model = build_markov_model(markov_model, text, order=2)
+
+print(generate_random_text(markov_model, seed=7))
+
