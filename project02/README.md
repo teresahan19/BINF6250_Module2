@@ -1,5 +1,33 @@
 # Introduction
-Description of the project2
+This project implements a probabilistic text generation system using Markov Chains, a stochastic model that predicts sequences based on the statistical properties of training data. The generator analyzes input text to learn word transition patterns, then uses these patterns to create novel text sequences that mimic the style and structure of the original material.
+A Markov Chain is a mathematical system that transitions from one state to another based on probabilistic rules. The key property of Markov Chains is that the future state depends only on the current state, not on the sequence of events that preceded it. In text generation:
+
+- **States** are words or sequences of words (n-grams)
+- **Transitions** represent the probability of one word following another
+- **Order** determines how many previous words influence the next word prediction
+
+For example, in a 2nd-order Markov Chain, the next word depends on the previous two words, allowing the model to capture more context and generate more coherent text than a 1st-order model.
+
+### Training Phase
+1. **Text Processing**: Input text is tokenized into individual words and punctuation marks
+2. **N-gram Construction**: The text is analyzed to build state representations (sequences of N words)
+3. **Transition Counting**: The model counts how often each word follows each state
+4. **Probability Calculation**: Raw counts are converted to probability distributions
+
+### Generation Phase
+1. **Initialization**: Start with a beginning state (marked with special tokens)
+2. **Probabilistic Selection**: Randomly choose the next word based on learned probabilities
+3. **State Update**: Shift the context window forward (sliding window technique)
+4. **Iteration**: Repeat until reaching an end condition (end marker or maximum length)
+
+## Key Features
+
+- **Configurable Order**: Supports nth-order Markov models for varying levels of context
+- **Beta Distribution**: Models how sequences begin (start probabilities)
+- **Omega Distribution**: Models how sequences end (ending probabilities)
+- **Weighted Random Selection**: Uses transition frequencies to probabilistically choose next words
+- **Metadata Tracking**: Calculates statistics like average sentence length from training data
+- **Reproducible Generation**: Seed-based random number generation for consistent outputs
 
 # Pseudocode
 Put pseudocode in this box:
@@ -261,7 +289,7 @@ Description of the stumbling blocks the team experienced
 Group leader's reflection on the project
 
 ## Other member
-Other members' reflections on the project
+Shameem - I found this project to be a really enriching challenge. It seemed intimidating at first, but through the pseudocode and collaborating with my peers, I found that the process was much more manageable in chunks. Working on the individual functions to match a singular task decluttered my thought process, and as we moved on to the next steps, it made them easier. We also bounced a lot of really helpful ideas, such as the data structures and probability weightage, which also reinforced my understanding of the concepts. Overall, as difficult as I found this project, it was ultimately rewarding to see our outputs as somewhat meaningful texts.
 
 # Generative AI Appendix
 As per the syllabus
