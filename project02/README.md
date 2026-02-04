@@ -298,3 +298,11 @@ Shameem - I found this project to be a really enriching challenge. It seemed int
 
 # Generative AI Appendix
 As per the syllabus
+Description of AI and version: We used Microsoft Copilot, powered by GPT-4
+
+The prompt used was: “I have three versions of code here that we are trying to merge into a single program that is a markov chain based model to generate new text based on the style of the input text but we are struggling to merge these three versions. Can you help us identify where our parameters might not be matching up"
+
+Explanation of use: Generative AI was used to assist in understanding how to merge independently written Python code by aligning logic, structure, and handling potential errors.
+
+Justification for use: Generative AI was used to improve efficiency and support collaboration by providing guidance on code integration while allowing the team to focus on problem-solving and implementation.
+
